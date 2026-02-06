@@ -41,7 +41,7 @@ type
     begin
       var lEBuildExe := FindEBuildExe();
       if not assigned(lEBuildExe) then
-        raise new Exception("EBuild.exe culd not be located.");
+        raise new Exception("EBuild.exe could not be located.");
       result := doRunCustomEBuild(aServices, ec, lEBuildExe, aProject, aOtherParameters);
     end;
 
