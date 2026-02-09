@@ -20,16 +20,16 @@ function findTool(toolName) {
   var isWindows = env["OS"] && env["OS"].indexOf("Windows") >= 0;
 
   if (isWindows) {
-    // Windows: use 'where' command
-    var result = shell.exec("where", toolName, { capture: true, ignoreErrors: true });
-    if (result) {
+    // Windows: use 'where' command (returns exit code 1 if not found)
+    var result = shell.exec("where", toolName, { capture: true, allowedErrorCodes: [1] });
+    if (result && result.trim() != "") {
       var lines = result.split("\n");
       return lines[0].trim();  // Return first match
     }
   } else {
-    // Unix: use 'which' command
-    var result = shell.exec("/usr/bin/which", toolName, { capture: true, ignoreErrors: true });
-    if (result) {
+    // Unix: use 'which' command (returns exit code 1 if not found)
+    var result = shell.exec("/usr/bin/which", toolName, { capture: true, allowedErrorCodes: [1] });
+    if (result && result.trim() != "") {
       return result.trim();
     }
   }
