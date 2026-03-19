@@ -14,8 +14,11 @@ uses
   System.Xml.XPath,
   System.Xml.Xsl,
   RemObjects.Script.EcmaScript,
-  RemObjects.Train.API,
+  RemObjects.Train.API;
+{$IF NOT NETCOREAPP}
+uses
   DiscUtils.Iscsi;
+{$ENDIF}
 
 type
   // Message type classification for semantic logging

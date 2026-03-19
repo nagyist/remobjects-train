@@ -1,5 +1,6 @@
 ﻿namespace RemObjects.Train.API;
 
+{$IF NOT NETCOREAPP}
 interface
 
 uses
@@ -103,6 +104,6 @@ begin
   using sr := new System.IO.FileStream(aServices.ResolveWithBase(ec,aLocal), System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read) do
     aSelf.UploadFile(sr,aRemote);
 end;
-
+{$ENDIF}
 
 end.

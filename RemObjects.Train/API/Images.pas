@@ -14,8 +14,10 @@ type
   public
     method &Register(aServices: IApiRegistrationServices);
 
+    {$IF NOT NETCOREAPP}
     [WrapAs('images.createISO', SkipDryRun := true)]
     class method ImagesCreateISO(aServices: IApiRegistrationServices; ec: RemObjects.Script.EcmaScript.ExecutionContext;isoFile, basefolder: String; filemasklist: String; aDiskName: String; aRecurse: Boolean := true);
+    {$ENDIF}
     [WrapAs('images.createDMG', SkipDryRun := true)]
     class method ImagesCreateDMG(aServices: IApiRegistrationServices; ec: RemObjects.Script.EcmaScript.ExecutionContext;isoFile, basefolder: String; filemasklist: String; aDiskName: String; aRecurse: Boolean := true);
   end;
@@ -29,6 +31,7 @@ begin
     .AddValue('createDMG', RemObjects.Train.MUtilities.SimpleFunction(aServices.Engine, typeOf(ImagesPlugin), 'ImagesCreateDMG'));
 end;
 
+{$IF NOT NETCOREAPP}
 class method ImagesPlugin.ImagesCreateISO(aServices: IApiRegistrationServices; ec: RemObjects.Script.EcmaScript.ExecutionContext; isoFile: String; basefolder: String; filemasklist: String; aDiskName: String; aRecurse: Boolean := true);
 begin
   if String.IsNullOrEmpty(filemasklist) then filemasklist := '*';
@@ -47,6 +50,7 @@ begin
   end;
   lDisk.Build(aServices.ResolveWithBase(ec,isoFile));
 end;
+{$ENDIF}
 
 class method ImagesPlugin.ImagesCreateDMG(aServices: IApiRegistrationServices; ec: RemObjects.Script.EcmaScript.ExecutionContext;isoFile: String; basefolder: String; filemasklist: String; aDiskName: String; aRecurse: Boolean := true);
 begin
