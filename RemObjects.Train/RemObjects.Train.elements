@@ -11,9 +11,16 @@
     <AllowLegacyCreate>False</AllowLegacyCreate>
     <AllowUnsafeCode>False</AllowUnsafeCode>
     <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <Name>RemObjects.Train</Name>
     <ProjectGuid>{7E8CA883-87A3-4C65-9FEF-C46B1C763BCB}</ProjectGuid>
+    <Mode>Echoes</Mode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Target)' == 'Classic' ">
+    <TargetFramework>.NETFramework4.8</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Target)' == 'Core' ">
+    <TargetFramework>.NETCore</TargetFramework>
+    <OutputPath>.\Bin\Core</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <Optimize>False</Optimize>
@@ -47,6 +54,20 @@
     <WarnOnCaseMismatch>True</WarnOnCaseMismatch>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Echoes">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Elements">
+      <Private>True</Private>
+    </Reference>
+    <ProjectReference Include="..\Script\Source\RemObjects.Script\RemObjects.Script.oxygene">
+      <Name>RemObjects.Script</Name>
+      <Project>{caf9c919-d826-4452-910e-d8ba4861cd72}</Project>
+      <Private>True</Private>
+      <HintPath>..\Script\Source\RemObjects.Script\..\..\Bin\RemObjects.Script.dll</HintPath>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Target)' == 'Classic' ">
     <Reference Include="DiscUtils">
       <HintPath>Libraries\DiscUtils.dll</HintPath>
     </Reference>
@@ -67,24 +88,20 @@
     <Reference Include="System.Data.DataSetExtensions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <ProjectReference Include="..\Script\Source\RemObjects.Script\RemObjects.Script.oxygene">
-      <Name>RemObjects.Script</Name>
-      <Project>{caf9c919-d826-4452-910e-d8ba4861cd72}</Project>
-      <Private>True</Private>
-      <HintPath>..\Script\Source\RemObjects.Script\..\..\Bin\RemObjects.Script.dll</HintPath>
-    </ProjectReference>
-    <Reference Include="Elements">
-      <Private>True</Private>
-    </Reference>
     <NuGetReference Include="AWSSDK.S3:[3.7.402.12]">
       <Private>True</Private>
     </NuGetReference>
     <NuGetReference Include="AWSSDK.Core:[3.7.402.71]">
       <Private>True</Private>
     </NuGetReference>
-    <Reference Include="Echoes">
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Target)' == 'Core' ">
+    <NuGetReference Include="AWSSDK.S3:*">
       <Private>True</Private>
-    </Reference>
+    </NuGetReference>
+    <NuGetReference Include="AWSSDK.Core:*">
+      <Private>True</Private>
+    </NuGetReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\Async.pas" />
@@ -120,14 +137,6 @@
     <Compile Include="Properties\AssemblyInfo.pas" />
     <Compile Include="Utilities.pas" />
     <Compile Include="ZipStorer.cs" />
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.pas" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-    </None>
-    <Compile Include="Properties\Settings.Designer.pas" />
     <EmbeddedResource Include="Resources\Train2HTML.xslt">
       <SubType>Content</SubType>
     </EmbeddedResource>
